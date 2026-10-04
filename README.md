@@ -26,14 +26,12 @@ docker compose up --build -d
 Open <http://localhost:8000> and follow the setup: create the admin password,
 then name the quiz and add teams and questions. Then share or cast `/` to the
 audience and open `/admin` on another device, using the computer's network
-address ([details](docs/guide/getting-started.md#opening-the-screens)).
+address ([details](https://habema.github.io/kanz/guide/getting-started#opening-the-screens)).
 
 ## Documentation
 
 The full guide (onboarding, running a game, rules, schedule, question import,
-media and sounds, security, development) is in [`docs/`](docs/) and is
-published to GitHub Pages by `.github/workflows/docs.yml`. Run it locally with
-`pnpm --filter @kanz/docs dev`.
+media and sounds, security, development) is published at https://habema.github.io/kanz/.
 
 ## Development
 
@@ -41,7 +39,7 @@ published to GitHub Pages by `.github/workflows/docs.yml`. Run it locally with
 pnpm install && pnpm run typecheck && pnpm run test
 ```
 
-See [docs/guide/development.md](docs/guide/development.md).
+See https://habema.github.io/kanz/guide/development.
 
 ## License
 
