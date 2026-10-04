@@ -1,0 +1,819 @@
+openapi: 3.1.0
+info:
+  title: Kanz
+  version: 1.0.0
+  description: >-
+    The game show's API. Public routes serve the main screen and sign-in;
+    every /admin route needs the session cookie set by /auth/setup or /auth/login.
+servers:
+  - url: /api
+tags:
+  - name: game
+    description: Live game state and the admin's controls
+  - name: auth
+    description: The admin password and session
+  - name: setup
+    description: Game configuration (questions, teams, rounds, media)
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      summary: Health check
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+  /game:
+    get:
+      operationId: getPublicGame
+      tags: [game]
+      responses:
+        '200':
+          description: Main screen state; كنز/كشكول tiles and answers stay hidden until opened
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+  /auth:
+    get:
+      operationId: getAccess
+      tags: [auth]
+      responses:
+        '200':
+          description: Whether a password and a game exist yet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Access'
+  /auth/setup:
+    post:
+      operationId: createPassword
+      tags: [auth]
+      description: Creates the admin password; only allowed while none exists.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Password'
+      responses:
+        '200':
+          description: Password created and this device signed in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Access'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Password'
+      responses:
+        '200':
+          description: Signed in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Access'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          description: Too many wrong passwords from this address; try again in 15 minutes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      responses:
+        '200':
+          description: Signed out on this device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Access'
+  /admin/game:
+    get:
+      operationId: getHostGame
+      tags: [game]
+      responses:
+        '200':
+          description: Full state, with كنز/كشكول tiles and answers (for /admin and /mc)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/open:
+    post:
+      operationId: openTile
+      tags: [game]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TileSelection'
+      responses:
+        '200':
+          description: Tile opened on the main screen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/intro/end:
+    post:
+      operationId: endIntro
+      tags: [game]
+      responses:
+        '200':
+          description: كنز/كشكول celebration ended; the main screen shows the tile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/answer:
+    post:
+      operationId: setAnswerVisibility
+      tags: [game]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerVisibility'
+      responses:
+        '200':
+          description: Answer shown or kept hidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/finish:
+    post:
+      operationId: finishTile
+      tags: [game]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinishTile'
+      responses:
+        '200':
+          description: Points awarded (optional) and tile closed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/cancel:
+    post:
+      operationId: cancelTile
+      tags: [game]
+      responses:
+        '200':
+          description: Open tile closed and returned to the board
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/round:
+    post:
+      operationId: setRound
+      tags: [game]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundChange'
+      responses:
+        '200':
+          description: Schedule moved to that round
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/view:
+    post:
+      operationId: setScreenView
+      tags: [game]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScreenViewChange'
+      responses:
+        '200':
+          description: Main screen switched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/sound:
+    post:
+      operationId: playSound
+      tags: [game]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SoundPlay'
+      responses:
+        '200':
+          description: Sound sent to the main screen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/music:
+    post:
+      operationId: setMusic
+      tags: [game]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Music'
+      responses:
+        '200':
+          description: Background music updated on the main screen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/plays:
+    get:
+      operationId: getPlays
+      tags: [game]
+      responses:
+        '200':
+          description: Teams and every played tile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayLog'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/plays/{tileId}:
+    put:
+      operationId: updatePlay
+      tags: [game]
+      parameters:
+        - name: tileId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayUpdate'
+      responses:
+        '200':
+          description: Award for this tile corrected
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayLog'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: restoreTile
+      tags: [game]
+      parameters:
+        - name: tileId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Award removed and tile returned to the board
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayLog'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/teams:
+    put:
+      operationId: updateTeams
+      tags: [game]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamNames'
+      responses:
+        '200':
+          description: Team names saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayLog'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/config:
+    get:
+      operationId: getGameSetup
+      tags: [setup]
+      responses:
+        '200':
+          description: The game configuration and whether a game is under way
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSetup'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: saveGameConfig
+      tags: [setup]
+      description: Refuses changes to the board or team count while plays exist (see structureKey).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameConfig'
+      responses:
+        '200':
+          description: Configuration saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSetup'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/reset:
+    post:
+      operationId: resetGame
+      tags: [setup]
+      responses:
+        '200':
+          description: Scores, plays and rounds cleared (the password is kept)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSetup'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/media:
+    post:
+      operationId: uploadMedia
+      tags: [setup]
+      description: >-
+        Stores the request body and returns its URL for use in GameConfig.media.
+        Send the file with its own Content-Type: PNG, JPEG, GIF, WebP or SVG
+        images, MP3, WAV, OGG, M4A or AAC audio, MP4 or WebM video (100 MB max).
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema: { type: string, format: binary }
+      responses:
+        '200':
+          description: File stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaUpload'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    BadRequest:
+      description: Invalid input, or the action doesn't fit the current state
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Admin session required, or wrong password
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Branding:
+      type: object
+      description: What the screens need from the game configuration.
+      required: [title, kanzMultiplier, media]
+      properties:
+        title: { type: string }
+        subtitle: { type: string }
+        kanzMultiplier: { type: number }
+        media: { $ref: '#/components/schemas/Media' }
+    Media:
+      type: object
+      description: URLs of uploaded files; absent ones use the built-in defaults.
+      properties:
+        logo: { type: string }
+        kanzImage: { type: string }
+        kanzVideo: { type: string }
+        kanzMode: { $ref: '#/components/schemas/CelebrationMode' }
+        kashkoolImage: { type: string }
+        kashkoolVideo: { type: string }
+        kashkoolMode: { $ref: '#/components/schemas/CelebrationMode' }
+        music: { type: string }
+        sounds:
+          type: object
+          description: Replacements for the game's own sounds, keyed by name (GAME_SOUNDS in game-core).
+          additionalProperties: { type: string }
+    CelebrationMode:
+      type: string
+      description: How a كنز/كشكول opens; image (with music) by default for كنز, video for كشكول.
+      enum: [image, video]
+    SoundboardEntry:
+      type: object
+      description: A soundboard button; url is an upload or a built-in file (sounds/<name>.mp3).
+      required: [id, label, url]
+      properties:
+        id: { type: string, minLength: 1, maxLength: 40 }
+        label: { type: string, maxLength: 40 }
+        url: { type: string, maxLength: 300 }
+    SoundButton:
+      type: object
+      required: [id, label]
+      properties:
+        id: { type: string }
+        label: { type: string }
+    MediaUpload:
+      type: object
+      required: [url]
+      properties:
+        url: { type: string }
+    Item:
+      type: object
+      description: One tile, in board order. A question may be a كنز; a كشكول has no answer.
+      required: [kind, prompt]
+      properties:
+        kind: { $ref: '#/components/schemas/TileKind' }
+        prompt: { type: string, maxLength: 1000 }
+        answer: { type: string, maxLength: 500 }
+        kanz: { type: boolean }
+    Category:
+      type: object
+      required: [id, title, items]
+      properties:
+        id: { type: string, minLength: 1, maxLength: 40, pattern: '^[A-Za-z0-9_-]+$' }
+        title: { type: string, maxLength: 60 }
+        items:
+          type: array
+          maxItems: 40
+          items: { $ref: '#/components/schemas/Item' }
+    Team:
+      type: object
+      required: [name, color]
+      properties:
+        name: { type: string, maxLength: 40 }
+        color: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+    GameConfig:
+      type: object
+      required: [title, pointsStep, kashkoolPoints, kanzMultiplier, categories, teams, rounds, media]
+      properties:
+        title: { type: string, maxLength: 80 }
+        subtitle: { type: string, maxLength: 80 }
+        pointsStep: { type: integer, minimum: 1 }
+        kashkoolPoints: { type: integer, minimum: 0 }
+        kanzMultiplier: { type: number, minimum: 1 }
+        categories:
+          type: array
+          maxItems: 12
+          items: { $ref: '#/components/schemas/Category' }
+        teams:
+          type: array
+          maxItems: 40
+          items: { $ref: '#/components/schemas/Team' }
+        rounds:
+          type: array
+          description: '[picker, opponent] by 1-based team number, one per tile; empty for no schedule.'
+          items:
+            type: array
+            items: { type: integer }
+            minItems: 2
+            maxItems: 2
+        media: { $ref: '#/components/schemas/Media' }
+        soundboard:
+          type: array
+          description: The admin's soundboard; absent means the built-in buttons.
+          maxItems: 60
+          items: { $ref: '#/components/schemas/SoundboardEntry' }
+    GameSetup:
+      type: object
+      required: [config, started]
+      properties:
+        config: { $ref: '#/components/schemas/GameConfig' }
+        started:
+          type: boolean
+          description: True once any tile has been played; structural changes then need a reset.
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+    Password:
+      type: object
+      required: [password]
+      properties:
+        password: { type: string, minLength: 6, maxLength: 64 }
+    Access:
+      type: object
+      required: [hasPassword, gameConfigured]
+      properties:
+        hasPassword:
+          type: boolean
+          description: The admin password has been created.
+        gameConfigured:
+          type: boolean
+          description: A game has been saved from /setup (onboarding is done).
+    TileSelection:
+      type: object
+      required: [tileId]
+      properties:
+        tileId: { type: string }
+    AnswerVisibility:
+      type: object
+      required: [show]
+      properties:
+        show: { type: boolean }
+        verdict:
+          $ref: '#/components/schemas/AnswerVerdict'
+          description: With show, plays the matching sound and animation on the main screen.
+    AnswerVerdict:
+      type: string
+      enum: [correct, wrong]
+    FinishTile:
+      type: object
+      description: Omit teamId to close the tile without awarding points.
+      properties:
+        teamId: { type: integer }
+    RoundChange:
+      type: object
+      description: 1-based; one past the last round means the schedule is over.
+      required: [round]
+      properties:
+        round: { type: integer, minimum: 1 }
+    MatchTeams:
+      type: object
+      description: The two teams on a round; picker chooses the tile.
+      required: [picker, opponent]
+      properties:
+        picker: { type: integer }
+        opponent: { type: integer }
+    Match:
+      type: object
+      description: >-
+        Where the schedule stands (total is 0 when the game has none). round is 1-based and is total + 1
+        once every round has been played (then current is absent).
+      required: [round, total]
+      properties:
+        round: { type: integer }
+        total: { type: integer }
+        current:
+          $ref: '#/components/schemas/MatchTeams'
+        next:
+          $ref: '#/components/schemas/MatchTeams'
+    ScreenView:
+      type: string
+      description: reveal is the leaderboard unveiled team by team, from last place up.
+      enum: [board, scoreboard, reveal]
+    ScreenViewChange:
+      type: object
+      required: [view]
+      properties:
+        view: { $ref: '#/components/schemas/ScreenView' }
+        revealStep:
+          type: integer
+          minimum: 0
+          description: With view=reveal, how many reveal presses have been made (0 when omitted).
+    SoundPlay:
+      type: object
+      description: A soundboard button id, or "stop" to silence the main screen.
+      required: [name]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 40 }
+    SoundCue:
+      type: object
+      description: The last soundboard press; the main screen plays url (or stops, for "stop") when id changes.
+      required: [id]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        url: { type: string }
+    Music:
+      type: object
+      description: Background music on the main screen; it pauses while any other audio plays.
+      required: [on, volume]
+      properties:
+        on: { type: boolean }
+        volume: { type: number, minimum: 0, maximum: 1 }
+    TileKind:
+      type: string
+      enum: [question, kashkool]
+    AnswerState:
+      type: string
+      enum: [pending, shown, hidden]
+    GameTile:
+      type: object
+      required: [id, value, used]
+      properties:
+        id: { type: string }
+        value: { type: integer }
+        used: { type: boolean }
+        kind: { $ref: '#/components/schemas/TileKind' }
+        kanz: { type: boolean }
+    GameCategory:
+      type: object
+      required: [id, title, tiles]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        tiles:
+          type: array
+          items: { $ref: '#/components/schemas/GameTile' }
+    GameTeam:
+      type: object
+      required: [id, name, color, score]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        color: { type: string, description: '#rrggbb' }
+        score: { type: integer }
+    CurrentTile:
+      type: object
+      required: [id, category, value, kind, kanz, points, prompt]
+      properties:
+        id: { type: string }
+        category: { type: string }
+        value: { type: integer }
+        kind: { $ref: '#/components/schemas/TileKind' }
+        kanz: { type: boolean }
+        points: { type: integer }
+        prompt: { type: string }
+        answer: { type: string }
+    GameEvent:
+      type: object
+      required: [id, type]
+      properties:
+        id: { type: integer }
+        type: { type: string, enum: [opened, intro, answer, finished, cancelled, view, admin] }
+        tileId: { type: string }
+        teamId: { type: integer }
+        points: { type: integer }
+    Game:
+      type: object
+      required:
+        [configured, branding, categories, teams, intro, match, answerState, view, event, sound, music, soundboard]
+      properties:
+        configured:
+          type: boolean
+          description: False until a game has been saved from /setup.
+        branding: { $ref: '#/components/schemas/Branding' }
+        categories:
+          type: array
+          items: { $ref: '#/components/schemas/GameCategory' }
+        teams:
+          type: array
+          items: { $ref: '#/components/schemas/GameTeam' }
+        current:
+          $ref: '#/components/schemas/CurrentTile'
+        intro:
+          type: boolean
+          description: True while the main screen plays the كنز/كشكول celebration for the open tile.
+        match:
+          $ref: '#/components/schemas/Match'
+        answerState: { $ref: '#/components/schemas/AnswerState' }
+        answerVerdict:
+          $ref: '#/components/schemas/AnswerVerdict'
+          description: Present only while the answer is shown with a verdict.
+        view: { $ref: '#/components/schemas/ScreenView' }
+        revealStep:
+          type: integer
+          description: With view=reveal, how many reveal presses have been made.
+        event:
+          $ref: '#/components/schemas/GameEvent'
+        sound:
+          $ref: '#/components/schemas/SoundCue'
+        music:
+          $ref: '#/components/schemas/Music'
+        soundboard:
+          type: array
+          items: { $ref: '#/components/schemas/SoundButton' }
+    TeamName:
+      type: object
+      required: [id, name]
+      properties:
+        id: { type: integer }
+        name: { type: string, minLength: 1, maxLength: 40 }
+    TeamNames:
+      type: object
+      required: [teams]
+      properties:
+        teams:
+          type: array
+          items: { $ref: '#/components/schemas/TeamName' }
+    PlayUpdate:
+      type: object
+      description: Omit teamId to record that nobody won this tile.
+      required: [points]
+      properties:
+        teamId: { type: integer }
+        points: { type: integer, minimum: 0 }
+    Play:
+      type: object
+      required: [tileId, category, value, kind, kanz, prompt, defaultPoints, points, open]
+      properties:
+        tileId: { type: string }
+        category: { type: string }
+        value: { type: integer }
+        kind: { $ref: '#/components/schemas/TileKind' }
+        kanz: { type: boolean }
+        prompt: { type: string }
+        defaultPoints: { type: integer }
+        teamId: { type: integer }
+        points: { type: integer }
+        open: { type: boolean }
+    PlayLog:
+      type: object
+      required: [teams, plays]
+      properties:
+        teams:
+          type: array
+          items: { $ref: '#/components/schemas/GameTeam' }
+        plays:
+          type: array
+          items: { $ref: '#/components/schemas/Play' }

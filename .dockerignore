@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+**/*.tsbuildinfo
+.git
+.env
+.claude
+
+# The docs site is built by its own workflow
+docs/
+!docs/package.json

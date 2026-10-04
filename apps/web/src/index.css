@@ -1,0 +1,448 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Noto Sans Arabic', sans-serif;
+
+  /* Muted text: white at N% over the page background, mixed in advance.
+     Translucent text would darken wherever Arabic glyphs overlap. */
+  --color-ink-25: #4c4d53;
+  --color-ink-30: #58595f;
+  --color-ink-35: #64656a;
+  --color-ink-40: #707176;
+  --color-ink-45: #7c7d81;
+  --color-ink-50: #88888c;
+  --color-ink-55: #939498;
+  --color-ink-60: #9fa0a3;
+  --color-ink-70: #b7b8ba;
+  --color-ink-75: #c3c4c6;
+  --color-ink-80: #cfd0d1;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: #383c47;
+  }
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+  body {
+    background: #10121a;
+    color: #f3f0e7;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Unlayered, so it must not set fonts: that would beat the text utilities. */
+button {
+  cursor: pointer;
+}
+.stage-shell {
+  background: radial-gradient(ellipse at 50% -20%, rgba(38, 55, 125, 0.38), transparent 55%), #11131b;
+}
+.stage-frame {
+  border: 5px solid #777a7c;
+  box-shadow:
+    inset 0 0 0 3px #17191c,
+    0 0 0 2px #d0d0cf,
+    0 20px 70px #0009;
+}
+.bevel-tile {
+  border: 2px solid #999;
+  background: linear-gradient(145deg, #bcbcbc, #929292);
+  color: #111f77;
+  box-shadow:
+    inset 2px 2px #eee,
+    inset -3px -3px #333,
+    3px 4px #030408;
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease;
+}
+.bevel-tile:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.12);
+}
+.bevel-tile:disabled {
+  cursor: not-allowed;
+  opacity: 0.28;
+  filter: grayscale(1);
+}
+.panel-bevel {
+  border: 2px solid #65686d;
+  background: linear-gradient(145deg, #222630, #151820);
+  box-shadow:
+    inset 2px 2px #343943,
+    inset -3px -3px #0c0e13,
+    5px 6px #06070a;
+}
+.entry {
+  animation: rise 0.45s both;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Main screen board */
+.category-head {
+  border: 2px solid #3b4fb0;
+  background: linear-gradient(180deg, #27377f, #18225a);
+  color: #fff;
+  box-shadow:
+    inset 2px 2px #4d63d1,
+    inset -3px -3px #0c1236,
+    3px 4px #030408;
+}
+.question-card {
+  border: 3px solid #777a7c;
+  box-shadow:
+    inset 3px 3px 0 #343943,
+    0 25px 90px #000;
+}
+.card-kanz {
+  border-color: #e9bb4f !important;
+  box-shadow:
+    0 0 0 2px #e9bb4f55,
+    0 0 60px #e9bb4f40,
+    0 25px 90px #000;
+}
+.card-kashkool {
+  border-color: #ff4f8b !important;
+  box-shadow:
+    0 0 0 2px #ff4f8b55,
+    0 0 60px #ff4f8b40,
+    0 25px 90px #000;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  border: 1px solid;
+  padding: 0.3em 0.8em;
+  font-weight: 900;
+  font-size: clamp(0.8rem, 1.1vw, 1.3rem);
+}
+.pill-gold {
+  border-color: #e9bb4f66;
+  background: #e9bb4f1a;
+  color: #f2c75d;
+}
+.pill-kanz {
+  border-color: #e9bb4f;
+  background: #e9bb4f;
+  color: #2a1c00;
+}
+.pill-kashkool {
+  border-color: #ff4f8b;
+  background: #ff4f8b;
+  color: #fff;
+}
+.tile-mark-kanz {
+  outline: 2px solid #e9bb4f;
+  outline-offset: 1px;
+}
+.tile-mark-kashkool {
+  outline: 2px solid #ff4f8b;
+  outline-offset: 1px;
+}
+.team-dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 0.62em;
+  height: 0.62em;
+  border-radius: 9999px;
+  vertical-align: middle;
+  box-shadow:
+    0 0 0 1.5px #00000066,
+    0 0 0 3px #ffffff33;
+}
+.award-banner {
+  border: 3px solid #e9bb4f;
+  background: radial-gradient(ellipse at 50% 0%, #3a2d0a, #14151c 70%);
+  box-shadow:
+    0 0 80px #e9bb4f55,
+    0 30px 90px #000;
+}
+
+/* كنز / كشكول reveal */
+.intro-kanz {
+  background: radial-gradient(circle at 50% 45%, #5a3d05 0%, #1d1402 55%, #070503 100%);
+}
+.intro-kashkool {
+  background: radial-gradient(circle at 50% 45%, #3b1a8f 0%, #150a3a 60%, #07051a 100%);
+}
+.rays {
+  position: absolute;
+  width: 180vmax;
+  height: 180vmax;
+  left: 50%;
+  top: 50%;
+  margin: -90vmax 0 0 -90vmax;
+  opacity: 0.35;
+}
+.rays-kanz {
+  background: repeating-conic-gradient(from 0deg, #f2c75d 0deg 8deg, transparent 8deg 20deg);
+  mask-image: radial-gradient(circle, #000 0%, transparent 60%);
+}
+.rays-kashkool {
+  background: repeating-conic-gradient(
+    from 0deg,
+    #ff4f8b 0deg 10deg,
+    #ffd23f 10deg 20deg,
+    #3ec6ff 20deg 30deg,
+    transparent 30deg 40deg
+  );
+  mask-image: radial-gradient(circle, #000 0%, transparent 62%);
+}
+.kashkool-stage {
+  background: radial-gradient(circle at 50% 50%, #2a3cff 0%, #0e1ea6 45%, #040a45 100%);
+}
+.rays-kashkool-video {
+  background: repeating-conic-gradient(
+    from 0deg,
+    #ffe14a 0deg 9deg,
+    transparent 9deg 18deg,
+    #ff3b6b 18deg 27deg,
+    transparent 27deg 36deg
+  );
+  mask-image: radial-gradient(circle, #000 15%, transparent 70%);
+  opacity: 0.3;
+}
+.kanz-stage {
+  background: radial-gradient(circle at 50% 50%, #6b4a08 0%, #2a1c03 50%, #0a0703 100%);
+}
+.rays-kanz-video {
+  background: repeating-conic-gradient(from 0deg, #ffd76a 0deg 8deg, transparent 8deg 20deg);
+  mask-image: radial-gradient(circle, #000 15%, transparent 70%);
+  opacity: 0.3;
+}
+.video-frame {
+  padding: 0.55vw;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffe36e, #ffb300);
+  box-shadow:
+    0 0 0 0.35vw #e0245e,
+    0 0 70px #ffd23f90,
+    0 30px 90px #000b;
+}
+.floating-suit {
+  position: absolute;
+  bottom: -8vh;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 3px 3px 0 #0007;
+}
+.intro-image {
+  filter: drop-shadow(0 0 40px #0009);
+  border-radius: 18px;
+}
+.intro-title-kanz {
+  color: #ffd76a;
+  text-shadow:
+    0 0 30px #e9bb4f,
+    0 6px 0 #7a5306;
+}
+.intro-title-kashkool {
+  color: #fff;
+  text-shadow:
+    0 0 30px #ff4f8b,
+    5px 5px 0 #ff4f8b,
+    -5px -5px 0 #3ec6ff;
+}
+.sparkle {
+  position: absolute;
+  background: #fff4c4;
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  filter: drop-shadow(0 0 6px #ffd76a);
+}
+.confetti {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 22px;
+  border-radius: 2px;
+}
+
+/* Leaderboard pyramid (after the original show's standings screen) */
+.sky {
+  background:
+    radial-gradient(ellipse 22% 9% at 18% 22%, #ffffffb0, transparent 70%),
+    radial-gradient(ellipse 18% 7% at 72% 14%, #ffffff90, transparent 70%),
+    radial-gradient(ellipse 26% 10% at 60% 70%, #ffffff80, transparent 70%),
+    radial-gradient(ellipse 20% 8% at 10% 80%, #ffffff90, transparent 70%),
+    radial-gradient(ellipse 16% 6% at 88% 52%, #ffffffa0, transparent 70%),
+    linear-gradient(180deg, #3f78c9 0%, #7fa9e0 55%, #b9d3f0 100%);
+}
+.pyramid-title {
+  color: #fff;
+  text-shadow:
+    0 3px 0 #1d3f7a,
+    0 0 20px #1d3f7a80;
+}
+.pyramid-card {
+  padding: 0.55vw;
+  background: linear-gradient(145deg, #e6e6e6, #a9a9a9);
+  border: 2px solid #f4f4f4;
+  box-shadow:
+    inset -3px -3px #6d6d6d,
+    4px 6px 0 #1d3f7a55,
+    0 12px 30px #1d3f7a40;
+}
+.pyramid-name {
+  background: #f5e21b;
+  color: #1a1a1a;
+  border: 2px solid #b8a400;
+  padding-block: 0.9vh;
+  box-shadow: inset 2px 2px #fff79a;
+}
+.pyramid-rank {
+  background: #35c24a;
+  color: #0d3312;
+  border: 2px solid #1f8a2f;
+  padding-block: 0.6vh;
+  box-shadow: inset 2px 2px #7be38a;
+}
+.pyramid-score {
+  background: #1f3fd1;
+  color: #ffd23f;
+  border: 2px solid #10269a;
+  padding-block: 0.5vh;
+  box-shadow: inset 2px 2px #4f6cff;
+}
+.pyramid-score-lead {
+  background: #e0262f;
+  border-color: #98141a;
+  box-shadow: inset 2px 2px #ff6a70;
+}
+.pyramid-badge {
+  background: linear-gradient(145deg, #5b6170, #2c303a);
+  color: #e8e8e8;
+  border: 2px solid #d5d5d5;
+  box-shadow: inset 2px 2px #7d8494;
+}
+.medal-1 {
+  background: linear-gradient(145deg, #ffe07a, #c58f12);
+  color: #3a2600;
+}
+.medal-2 {
+  background: linear-gradient(145deg, #f1f3f6, #9aa1ab);
+  color: #2b2f36;
+}
+.medal-3 {
+  background: linear-gradient(145deg, #f0b27a, #9c5a22);
+  color: #2e1605;
+}
+
+/* Leaderboard reveal (admin-driven, last place first) */
+.pyramid-sealed {
+  background: linear-gradient(145deg, #8fa6c9, #566c93);
+  border-color: #c7d5ec;
+}
+.pyramid-name-sealed {
+  background: #2c3f66;
+  color: #c7d5ec;
+  border-color: #1b2a4a;
+  box-shadow: inset 2px 2px #45598a;
+  letter-spacing: 0.3em;
+}
+.pyramid-glow-1 {
+  box-shadow:
+    inset -3px -3px #6d6d6d,
+    0 0 0 3px #ffd23f,
+    0 0 34px 6px #ffd23fb0,
+    0 12px 30px #1d3f7a40;
+}
+.pyramid-glow-2 {
+  box-shadow:
+    inset -3px -3px #6d6d6d,
+    0 0 0 3px #eef1f5,
+    0 0 26px 4px #ffffffa0,
+    0 12px 30px #1d3f7a40;
+}
+.pyramid-glow-3 {
+  box-shadow:
+    inset -3px -3px #6d6d6d,
+    0 0 0 3px #e2995a,
+    0 0 22px 3px #e2995a90,
+    0 12px 30px #1d3f7a40;
+}
+.crown {
+  color: #ffd23f;
+  fill: #ffd23f;
+  filter: drop-shadow(0 3px 0 #9a6a00) drop-shadow(0 0 14px #ffd23fb0);
+}
+.spotlight-1 {
+  background: radial-gradient(circle at 50% 45%, #6b4a06 0%, #241703 55%, #080502 100%);
+}
+.spotlight-2 {
+  background: radial-gradient(circle at 50% 45%, #56606e 0%, #1f242c 58%, #07080b 100%);
+}
+.spotlight-3 {
+  background: radial-gradient(circle at 50% 45%, #6a3714 0%, #251206 58%, #0a0502 100%);
+}
+.rays-medal-1 {
+  background: repeating-conic-gradient(from 0deg, #ffd23f 0deg 7deg, transparent 7deg 16deg);
+  mask-image: radial-gradient(circle, #000 0%, transparent 62%);
+  opacity: 0.45;
+}
+.rays-medal-2 {
+  background: repeating-conic-gradient(from 0deg, #eef1f5 0deg 8deg, transparent 8deg 20deg);
+  mask-image: radial-gradient(circle, #000 0%, transparent 58%);
+  opacity: 0.3;
+}
+.rays-medal-3 {
+  background: repeating-conic-gradient(from 0deg, #e2995a 0deg 8deg, transparent 8deg 20deg);
+  mask-image: radial-gradient(circle, #000 0%, transparent 58%);
+  opacity: 0.32;
+}
+.spotlight-medal {
+  border-radius: 50%;
+  border: 6px solid #fff8;
+  box-shadow:
+    0 0 0 0.6vh #0006,
+    0 0 70px #fff5,
+    inset 0 -8px 0 #0003;
+}
+.spotlight-place-1 {
+  color: #ffd76a;
+  text-shadow: 0 0 24px #e9bb4f;
+  letter-spacing: 0.08em;
+}
+.spotlight-place-2 {
+  color: #eef1f5;
+  text-shadow: 0 0 24px #ffffff90;
+  letter-spacing: 0.08em;
+}
+.spotlight-place-3 {
+  color: #f0b27a;
+  text-shadow: 0 0 24px #e2995a;
+  letter-spacing: 0.08em;
+}
+.spotlight-name {
+  color: #fff;
+  text-shadow:
+    0 6px 0 #0008,
+    0 0 40px #fff4;
+}
+
+.grain:before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  z-index: 20;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}

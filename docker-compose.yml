@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    # Only reachable from the other containers, so the default credentials stay inside
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: kanz
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d kanz']
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  migrate:
+    build:
+      context: .
+      target: migrate
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/kanz
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: 'no'
+
+  api:
+    build:
+      context: .
+      target: api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/kanz
+      # Signs admin sessions; read from .env in the project root
+      SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in .env}
+      # The app is served over plain http, so session cookies can't be Secure
+      COOKIE_SECURE: 'false'
+    volumes:
+      # Logos, images, sounds and videos uploaded from /setup
+      - media:/data/media
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  web:
+    build:
+      context: .
+      target: web
+    restart: unless-stopped
+    ports:
+      - '${WEB_PORT:-8000}:80'
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  db-data:
+  media:

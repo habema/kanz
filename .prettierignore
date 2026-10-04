@@ -1,0 +1,6 @@
+# Prettier also skips everything in .gitignore (dist, docs cache, ...).
+# Generated code:
+lib/*/src/generated
+pnpm-lock.yaml
+# Markdown tables and prose are kept as written:
+*.md

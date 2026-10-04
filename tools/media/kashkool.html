@@ -1,0 +1,197 @@
+<!doctype html>
+<!-- Built-in kashkool picture; tools/media/README.md renders it. -->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Lalezar&display=block');
+      html,
+      body {
+        margin: 0;
+        background: #000;
+      }
+      svg {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bg" cx=".5" cy=".45" r=".75">
+          <stop offset="0" stop-color="#2f4fe0" />
+          <stop offset=".6" stop-color="#1a2aa8" />
+          <stop offset="1" stop-color="#0a0f55" />
+        </radialGradient>
+        <radialGradient id="burst" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#fff7b0" />
+          <stop offset=".55" stop-color="#ffd21a" />
+          <stop offset="1" stop-color="#ff9a00" />
+        </radialGradient>
+        <linearGradient id="hat" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#ff3d7f" />
+          <stop offset=".2" stop-color="#ffb02e" />
+          <stop offset=".4" stop-color="#3ee38a" />
+          <stop offset=".6" stop-color="#2bb7ff" />
+          <stop offset=".8" stop-color="#9b5cff" />
+          <stop offset="1" stop-color="#ff3d7f" />
+        </linearGradient>
+        <linearGradient id="hatShade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#000" stop-opacity=".35" />
+          <stop offset=".45" stop-color="#fff" stop-opacity=".25" />
+          <stop offset="1" stop-color="#000" stop-opacity=".45" />
+        </linearGradient>
+        <linearGradient id="red" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ff5a4a" />
+          <stop offset="1" stop-color="#b80d1c" />
+        </linearGradient>
+        <linearGradient id="cup" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#9aa3b8" />
+          <stop offset=".4" stop-color="#ffffff" />
+          <stop offset="1" stop-color="#b8c0d2" />
+        </linearGradient>
+        <radialGradient id="coin" cx=".38" cy=".35" r=".7">
+          <stop offset="0" stop-color="#fff6c4" />
+          <stop offset=".5" stop-color="#f0bf3f" />
+          <stop offset="1" stop-color="#a36d0f" />
+        </radialGradient>
+        <filter id="drop" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="6" dy="10" stdDeviation="6" flood-color="#000" flood-opacity=".45" />
+        </filter>
+      </defs>
+
+      <rect width="1280" height="720" fill="url(#bg)" />
+
+      <!-- starburst -->
+      <g transform="translate(640 340)" filter="url(#drop)">
+        <polygon
+          id="star"
+          fill="url(#burst)"
+          stroke="#e0420f"
+          stroke-width="6"
+          stroke-linejoin="round"
+          points="0,-300 52,-150 170,-250 128,-92 300,-120 170,-20 330,40 160,72 250,200 92,140 70,300 0,170 -80,290 -96,138 -250,220 -160,70 -330,50 -170,-26 -300,-140 -126,-96 -180,-260 -54,-150"
+        />
+      </g>
+
+      <!-- party hat -->
+      <g filter="url(#drop)">
+        <path d="M640 70 L780 520 Q640 570 500 520 Z" fill="url(#hat)" />
+        <path d="M640 70 L780 520 Q640 570 500 520 Z" fill="url(#hatShade)" />
+        <g stroke="#ffffff" stroke-width="10" stroke-opacity=".5" fill="none">
+          <path d="M598 205 Q640 222 682 205" />
+          <path d="M560 330 Q640 356 720 330" />
+          <path d="M522 450 Q640 484 758 450" />
+        </g>
+        <g fill="#fff" opacity=".85">
+          <circle cx="610" cy="270" r="9" />
+          <circle cx="680" cy="290" r="9" />
+          <circle cx="590" cy="400" r="10" />
+          <circle cx="700" cy="410" r="10" />
+          <circle cx="640" cy="160" r="7" />
+        </g>
+        <path
+          d="M500 520 Q640 570 780 520 Q790 548 640 586 Q490 548 500 520 Z"
+          fill="#ffd21a"
+          stroke="#c77f00"
+          stroke-width="3"
+        />
+        <!-- pom-pom -->
+        <g transform="translate(640 66)">
+          <circle r="34" fill="#ff3d7f" />
+          <path d="M0-40 L8-12 L38-12 L14 6 L24 36 L0 18 L-24 36 L-14 6 L-38-12 L-8-12Z" fill="#ffd21a" opacity=".9" />
+        </g>
+      </g>
+
+      <!-- the word كشكول -->
+      <g font-family="Lalezar" font-size="230" text-anchor="middle" transform="rotate(-8 640 400)">
+        <text x="652" y="452" fill="#3a0006" opacity=".6">كشكول</text>
+        <text
+          x="640"
+          y="440"
+          fill="url(#red)"
+          stroke="#2a0a0e"
+          stroke-width="10"
+          paint-order="stroke"
+          stroke-linejoin="round"
+        >
+          كشكول
+        </text>
+      </g>
+
+      <!-- floating objects -->
+      <!-- playing cards -->
+      <g transform="translate(120 70) rotate(-14)" filter="url(#drop)">
+        <rect width="110" height="150" rx="10" fill="#fff" stroke="#333" stroke-width="2" />
+        <text x="14" y="38" font-family="Arial" font-weight="700" font-size="30" fill="#d0101e">A</text>
+        <path d="M55 92 c-18-22-40-6-30 12 c6 10 30 26 30 26 c0 0 24-16 30-26 c10-18-12-34-30-12Z" fill="#d0101e" />
+      </g>
+      <g transform="translate(200 90) rotate(8)" filter="url(#drop)">
+        <rect width="110" height="150" rx="10" fill="#fff" stroke="#333" stroke-width="2" />
+        <text x="14" y="38" font-family="Arial" font-weight="700" font-size="30" fill="#111">K</text>
+        <path
+          d="M55 70 c-22 26-30 34-30 44 c0 12 16 16 24 6 c-2 10-6 16-10 20 h32 c-4-4-8-10-10-20 c8 10 24 6 24-6 c0-10-8-18-30-44Z"
+          fill="#111"
+        />
+      </g>
+      <!-- wireframe cube -->
+      <g transform="translate(1010 80)" fill="none" stroke="#e8ecff" stroke-width="4" stroke-linejoin="round">
+        <path d="M0 40 L70 0 L140 40 L70 80 Z" />
+        <path d="M0 40 L0 130 L70 170 L140 130 L140 40" />
+        <path d="M70 80 L70 170" />
+        <path d="M0 130 L70 90 L140 130 M70 0 L70 90" stroke-dasharray="8 8" opacity=".6" />
+      </g>
+      <!-- paper cups -->
+      <g transform="translate(1080 470) rotate(14)" filter="url(#drop)">
+        <path d="M0 0 L100 0 L86 130 L14 130 Z" fill="url(#cup)" stroke="#6b7389" stroke-width="3" />
+        <ellipse cx="50" cy="0" rx="50" ry="12" fill="#e9edf6" stroke="#6b7389" stroke-width="3" />
+      </g>
+      <g transform="translate(150 470) rotate(-20)" filter="url(#drop)">
+        <path d="M0 0 L90 0 L78 116 L12 116 Z" fill="url(#cup)" stroke="#6b7389" stroke-width="3" />
+        <ellipse cx="45" cy="0" rx="45" ry="11" fill="#e9edf6" stroke="#6b7389" stroke-width="3" />
+      </g>
+      <!-- star outline with dots -->
+      <g
+        transform="translate(1120 330) rotate(12)"
+        fill="none"
+        stroke="#ff6aa8"
+        stroke-width="5"
+        stroke-linejoin="round"
+      >
+        <polygon points="0,-60 16,-20 58,-18 24,8 36,50 0,26 -36,50 -24,8 -58,-18 -16,-20" />
+        <g fill="#ffd21a" stroke="none">
+          <circle cy="-60" r="8" />
+          <circle cx="58" cy="-18" r="8" />
+          <circle cx="36" cy="50" r="8" />
+          <circle cx="-36" cy="50" r="8" />
+          <circle cx="-58" cy="-18" r="8" />
+        </g>
+      </g>
+      <!-- wireframe ball -->
+      <g transform="translate(150 330)" fill="none" stroke="#7df0c8" stroke-width="4">
+        <circle r="58" />
+        <ellipse rx="58" ry="20" />
+        <ellipse rx="20" ry="58" />
+        <path d="M-50-30 L50 30 M-50 30 L50-30" opacity=".6" />
+      </g>
+      <!-- coins -->
+      <circle cx="330" cy="610" r="30" fill="url(#coin)" stroke="#7a520c" stroke-width="3" />
+      <circle cx="1000" cy="640" r="24" fill="url(#coin)" stroke="#7a520c" stroke-width="3" />
+      <!-- a sum on the board -->
+      <text x="420" y="650" font-family="Lalezar" font-size="64" fill="#e8ecff" opacity=".9">٢ + ٢ = ٥ ؟</text>
+      <!-- confetti -->
+      <g opacity=".9">
+        <rect x="420" y="60" width="18" height="8" fill="#ff3d7f" transform="rotate(30 420 60)" />
+        <rect x="860" y="120" width="18" height="8" fill="#3ee38a" transform="rotate(-20 860 120)" />
+        <rect x="900" y="560" width="18" height="8" fill="#ffd21a" transform="rotate(50 900 560)" />
+        <rect x="360" y="200" width="18" height="8" fill="#2bb7ff" transform="rotate(-40 360 200)" />
+        <rect x="940" y="250" width="18" height="8" fill="#ff6aa8" transform="rotate(10 940 250)" />
+        <rect x="300" y="420" width="18" height="8" fill="#ffd21a" transform="rotate(70 300 420)" />
+        <circle cx="820" cy="660" r="6" fill="#3ee38a" />
+        <circle cx="470" cy="120" r="6" fill="#ffd21a" />
+        <circle cx="1200" cy="220" r="6" fill="#3ee38a" />
+        <circle cx="60" cy="250" r="6" fill="#ff3d7f" />
+      </g>
+    </svg>
+  </body>
+</html>

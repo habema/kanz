@@ -1,0 +1,39 @@
+# Supply-chain defense: only install versions published at least a day ago.
+minimumReleaseAge: 1440
+
+packages:
+  - apps/*
+  - lib/*
+  - docs
+
+catalog:
+  '@tailwindcss/vite': ^4.1.14
+  '@tanstack/react-query': ^5.90.21
+  '@types/node': ^24.0.0
+  '@types/react': ^19.2.0
+  '@types/react-dom': ^19.2.0
+  '@vitejs/plugin-react': ^5.0.4
+  drizzle-orm: ^0.45.2
+  framer-motion: ^12.23.24
+  lucide-react: ^0.545.0
+  react: 19.1.0
+  react-dom: 19.1.0
+  tailwindcss: ^4.1.14
+  vite: ^7.3.2
+  wouter: ^3.3.5
+  zod: ^3.25.76
+
+autoInstallPeers: false
+
+# pnpm 10 reads onlyBuiltDependencies, later versions allowBuilds.
+onlyBuiltDependencies:
+  - esbuild
+allowBuilds:
+  esbuild: true
+
+overrides:
+  # drizzle-kit pulls in an older, vulnerable esbuild through this loader
+  '@esbuild-kit/esm-loader': 'npm:tsx@^4.21.0'
+  esbuild: '0.28.2'
+  # orval pins js-yaml below the CVE fix (>=4.3.2)
+  js-yaml: '4.3.2'

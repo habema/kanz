@@ -1,0 +1,210 @@
+<!doctype html>
+<!-- Built-in kanz picture; tools/media/README.md renders it. -->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=block');
+      html,
+      body {
+        margin: 0;
+        background: #000;
+      }
+      svg {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#063d2c" />
+          <stop offset=".55" stop-color="#0f8a5c" />
+          <stop offset="1" stop-color="#1fb877" />
+        </linearGradient>
+        <radialGradient id="glow" cx=".5" cy=".55" r=".55">
+          <stop offset="0" stop-color="#7dffc4" stop-opacity=".45" />
+          <stop offset="1" stop-color="#7dffc4" stop-opacity="0" />
+        </radialGradient>
+        <linearGradient id="front" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#b9a6cf" />
+          <stop offset="1" stop-color="#7d6896" />
+        </linearGradient>
+        <linearGradient id="side" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#8a76a3" />
+          <stop offset="1" stop-color="#5e4c77" />
+        </linearGradient>
+        <linearGradient id="lidOut" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#d7c8e6" />
+          <stop offset="1" stop-color="#9b86b4" />
+        </linearGradient>
+        <linearGradient id="lidIn" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#4a3a5e" />
+          <stop offset="1" stop-color="#2b2038" />
+        </linearGradient>
+        <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff0a8" />
+          <stop offset=".45" stop-color="#e3b23c" />
+          <stop offset="1" stop-color="#9a6a12" />
+        </linearGradient>
+        <linearGradient id="goldH" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#b98522" />
+          <stop offset=".5" stop-color="#ffe58a" />
+          <stop offset="1" stop-color="#b98522" />
+        </linearGradient>
+        <radialGradient id="coin" cx=".38" cy=".35" r=".7">
+          <stop offset="0" stop-color="#fff6c4" />
+          <stop offset=".5" stop-color="#f0bf3f" />
+          <stop offset="1" stop-color="#a36d0f" />
+        </radialGradient>
+        <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffffff" />
+          <stop offset=".55" stop-color="#e4e7ee" />
+          <stop offset="1" stop-color="#9aa1b3" />
+        </linearGradient>
+        <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="6" />
+        </filter>
+        <symbol id="spark" viewBox="-50 -50 100 100">
+          <path d="M0-50 L6-6 L50 0 L6 6 L0 50 L-6 6 L-50 0 L-6-6Z" fill="#fff" />
+          <path d="M-22-22 L3-3 L22-22 L3 3 L22 22 L-3 3 L-22 22 L-3-3Z" fill="#fff" opacity=".7" />
+          <circle r="7" fill="#fff" />
+        </symbol>
+        <!-- scalloped gold trim: a band of studs -->
+        <pattern id="studs" width="34" height="30" patternUnits="userSpaceOnUse">
+          <circle cx="17" cy="15" r="10" fill="url(#coin)" stroke="#7a520c" stroke-width="2" />
+        </pattern>
+      </defs>
+
+      <!-- backdrop: green studio panel over a dark stage -->
+      <rect width="1280" height="720" fill="#05070a" />
+      <rect x="40" y="36" width="1200" height="470" fill="url(#bg)" />
+      <rect x="40" y="36" width="1200" height="470" fill="url(#glow)" />
+      <rect x="0" y="506" width="1280" height="214" fill="#07090d" />
+      <ellipse cx="640" cy="672" rx="420" ry="34" fill="#000" opacity=".8" filter="url(#soft)" />
+
+      <!-- lid, open and tipped back -->
+      <g>
+        <path d="M330 300 L360 150 Q370 112 420 108 L880 108 Q930 112 942 150 L960 300 Z" fill="url(#lidIn)" />
+        <path
+          d="M318 302 L346 146 Q356 92 420 88 L880 88 Q944 92 956 146 L972 302 L960 300 L942 150 Q930 112 880 108 L420 108 Q370 112 360 150 L330 300 Z"
+          fill="url(#gold)"
+          stroke="#6b4a0a"
+          stroke-width="3"
+        />
+        <!-- lid top rim with studs -->
+        <path d="M346 146 Q356 92 420 88 L880 88 Q944 92 956 146" fill="none" stroke="url(#goldH)" stroke-width="22" />
+        <path
+          d="M346 146 Q356 92 420 88 L880 88 Q944 92 956 146"
+          fill="none"
+          stroke="#7a520c"
+          stroke-width="22"
+          stroke-dasharray="2 30"
+          stroke-linecap="round"
+          opacity=".55"
+        />
+        <!-- hasp hanging from the lid -->
+        <path d="M620 108 L680 108 L672 214 Q650 236 628 214 Z" fill="url(#silver)" stroke="#5b6170" stroke-width="3" />
+        <circle cx="650" cy="200" r="9" fill="#5b6170" />
+      </g>
+
+      <!-- treasure heaped in the chest -->
+      <g>
+        <path
+          d="M300 330 Q360 250 450 262 Q520 228 600 252 Q680 222 760 250 Q850 236 900 274 Q950 290 990 334 Z"
+          fill="#a8771a"
+        />
+        <g stroke="#7a520c" stroke-width="2">
+          <ellipse cx="380" cy="300" rx="34" ry="14" fill="url(#coin)" />
+          <ellipse cx="440" cy="284" rx="34" ry="14" fill="url(#coin)" />
+          <ellipse cx="512" cy="270" rx="34" ry="14" fill="url(#coin)" />
+          <ellipse cx="560" cy="296" rx="34" ry="14" fill="url(#coin)" />
+          <ellipse cx="700" cy="262" rx="34" ry="14" fill="url(#coin)" />
+          <ellipse cx="770" cy="282" rx="34" ry="14" fill="url(#coin)" />
+          <ellipse cx="846" cy="268" rx="34" ry="14" fill="url(#coin)" />
+          <ellipse cx="900" cy="300" rx="34" ry="14" fill="url(#coin)" />
+          <ellipse cx="470" cy="314" rx="34" ry="14" fill="url(#coin)" />
+          <ellipse cx="820" cy="312" rx="34" ry="14" fill="url(#coin)" />
+          <circle cx="610" cy="262" r="24" fill="url(#coin)" />
+          <circle cx="420" cy="320" r="20" fill="url(#coin)" />
+          <circle cx="950" cy="320" r="18" fill="url(#coin)" />
+        </g>
+        <!-- gems -->
+        <g stroke="#ffffff" stroke-width="2" stroke-linejoin="round">
+          <path d="M640 230 L676 236 L688 268 L652 290 L622 264 Z" fill="#c9d6ff" />
+          <path d="M640 230 L652 290 M676 236 L622 264" stroke-opacity=".6" />
+          <path d="M470 236 L500 244 L504 272 L478 284 L456 262 Z" fill="#ff7bb0" />
+          <path d="M780 222 L812 230 L818 260 L792 274 L770 252 Z" fill="#7fe3ff" />
+          <path d="M560 248 L580 252 L584 270 L566 278 L552 266 Z" fill="#b38bff" />
+          <path d="M880 246 L902 250 L906 270 L888 280 L872 266 Z" fill="#ff7bb0" />
+          <path d="M380 264 L404 268 L408 290 L388 300 L370 284 Z" fill="#c9d6ff" />
+        </g>
+        <!-- pearl string draped over the edge -->
+        <g fill="#fffaf0" stroke="#d8cbb0" stroke-width="1.5">
+          <circle cx="700" cy="318" r="8" />
+          <circle cx="716" cy="326" r="8" />
+          <circle cx="732" cy="336" r="8" />
+          <circle cx="746" cy="348" r="8" />
+          <circle cx="758" cy="362" r="8" />
+          <circle cx="766" cy="378" r="8" />
+        </g>
+      </g>
+
+      <!-- chest body: front face and right side -->
+      <path d="M960 320 L1020 300 L1020 600 L960 640 Z" fill="url(#side)" stroke="#3d2f50" stroke-width="3" />
+      <rect x="300" y="320" width="660" height="320" fill="url(#front)" stroke="#3d2f50" stroke-width="3" />
+      <!-- gold frame with studs -->
+      <g>
+        <rect x="300" y="320" width="660" height="34" fill="url(#gold)" />
+        <rect x="300" y="606" width="660" height="34" fill="url(#gold)" />
+        <rect x="300" y="320" width="34" height="320" fill="url(#gold)" />
+        <rect x="926" y="320" width="34" height="320" fill="url(#gold)" />
+        <rect x="300" y="322" width="660" height="30" fill="url(#studs)" />
+        <rect x="300" y="608" width="660" height="30" fill="url(#studs)" />
+        <g transform="translate(300 352) rotate(90) translate(0 -34)">
+          <rect width="254" height="34" fill="url(#studs)" />
+        </g>
+        <g transform="translate(960 352) rotate(90) translate(0 -2)">
+          <rect width="254" height="34" fill="url(#studs)" transform="translate(0 2)" />
+        </g>
+        <!-- side trim -->
+        <path d="M960 320 L1020 300 L1020 322 L960 344 Z" fill="url(#gold)" />
+        <path d="M960 616 L1020 578 L1020 600 L960 640 Z" fill="url(#gold)" />
+        <!-- side ornament -->
+        <g transform="translate(990 460) skewY(-18)">
+          <circle r="20" fill="url(#coin)" stroke="#7a520c" stroke-width="3" />
+          <circle cy="-40" r="10" fill="url(#coin)" stroke="#7a520c" stroke-width="2" />
+          <circle cy="40" r="10" fill="url(#coin)" stroke="#7a520c" stroke-width="2" />
+        </g>
+      </g>
+      <!-- lock plate -->
+      <path d="M618 340 L682 340 L682 392 Q650 414 618 392 Z" fill="url(#silver)" stroke="#5b6170" stroke-width="3" />
+      <path d="M645 362 a6 6 0 1 1 10 0 l3 18 h-16 Z" fill="#3a3f4b" />
+
+      <!-- the word كنز, raised silver letters -->
+      <g font-family="Reem Kufi" font-weight="700" font-size="200" text-anchor="middle">
+        <text x="656" y="576" fill="#2b2038" opacity=".55">كنز</text>
+        <text x="649" y="569" fill="#6a7080">كنز</text>
+        <text x="648" y="568" fill="#6a7080">كنز</text>
+        <text x="647" y="567" fill="#6a7080">كنز</text>
+        <text x="646" y="566" fill="#6a7080">كنز</text>
+        <text x="645" y="565" fill="#6a7080">كنز</text>
+        <text x="644" y="564" fill="#6a7080">كنز</text>
+        <text x="643" y="563" fill="#6a7080">كنز</text>
+        <text x="642" y="562" fill="#6a7080">كنز</text>
+        <text x="641" y="561" fill="#6a7080">كنز</text>
+        <text x="640" y="560" fill="url(#silver)">كنز</text>
+      </g>
+
+      <!-- sparkles -->
+      <use href="#spark" x="390" y="232" width="70" height="70" />
+      <use href="#spark" x="520" y="290" width="54" height="54" />
+      <use href="#spark" x="610" y="250" width="96" height="96" />
+      <use href="#spark" x="760" y="300" width="60" height="60" />
+      <use href="#spark" x="850" y="214" width="44" height="44" />
+      <use href="#spark" x="330" y="300" width="40" height="40" />
+      <use href="#spark" x="930" y="270" width="52" height="52" />
+    </svg>
+  </body>
+</html>
