@@ -2,6 +2,10 @@
 
 A live quiz game show inspired by the classic TV show *بنك المعلومات*. The audience watches the main screen, the host runs the game from the admin screen on another device, and a co-host can follow along on the optional MC screen.
 
+<p align="center">
+  <img src=".github/demo.gif" alt="Kanz demo" width="100%">
+</p>
+
 - **Main screen** (`/`): board, questions, answer reveals, award banners and a
   leaderboard reveal with spotlights for the top three. View-only.
 - **Admin** (`/admin`): open tiles, judge answers, award points, switch the
